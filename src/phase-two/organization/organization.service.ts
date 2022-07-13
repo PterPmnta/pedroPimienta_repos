@@ -85,7 +85,15 @@ export class OrganizationService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} organization`;
+  async remove(id: number) {
+    try {
+      await this.organizationRepository.delete(id);
+
+      return {
+        message: `La organizacion con el id: ${id}, se elimino de forma exitosa.`,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

@@ -73,7 +73,9 @@ export class OrganizationController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.organizationService.remove(+id);
+  @ApiOkResponse({ description: 'Deleted Organization' })
+  @ApiOperation({ summary: 'Delete Organization by Id' })
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.organizationService.remove(id);
   }
 }
