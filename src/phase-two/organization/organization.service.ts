@@ -78,7 +78,7 @@ export class OrganizationService {
       await this.organizationRepository.update(id, updateOrganizationDto);
 
       return {
-        message: 'Organizacion actualizada de manera exitosa.',
+        message: `Organizacion con el id:${id} ha sido actualizada con exito.`,
       };
     } catch (error) {
       throw new InternalServerErrorException(error.message);

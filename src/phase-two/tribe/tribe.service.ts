@@ -34,8 +34,16 @@ export class TribeService {
     return `This action returns a #${id} tribe`;
   }
 
-  update(id: number, updateTribeDto: UpdateTribeDto) {
-    return `This action updates a #${id} tribe`;
+  async update(id: number, updateTribeDto: UpdateTribeDto) {
+    try {
+      await this.tribeRepository.update(id, updateTribeDto);
+
+      return {
+        message: `Tribu con el id:${id} ha sido actualizada con exito.`,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   remove(id: number) {

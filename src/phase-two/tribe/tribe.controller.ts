@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { TribeService } from './tribe.service';
 import { CreateTribeDto } from './dto/create-tribe.dto';
@@ -36,8 +37,14 @@ export class TribeController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTribeDto: UpdateTribeDto) {
-    return this.tribeService.update(+id, updateTribeDto);
+  @ApiOkResponse({ description: 'Updated Tribe' })
+  @ApiBody({ type: UpdateTribeDto })
+  @ApiOperation({ summary: 'Update Tribe by Id' })
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateTribeDto: UpdateTribeDto,
+  ) {
+    return this.tribeService.update(id, updateTribeDto);
   }
 
   @Delete(':id')
