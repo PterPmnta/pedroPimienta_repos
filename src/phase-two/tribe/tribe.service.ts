@@ -1,11 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateTribeDto } from './dto/create-tribe.dto';
 import { UpdateTribeDto } from './dto/update-tribe.dto';
+import { Tribe } from './entities/tribe.entity';
 
 @Injectable()
 export class TribeService {
-  create(createTribeDto: CreateTribeDto) {
-    return 'This action adds a new tribe';
+  constructor(
+    @InjectRepository(Tribe)
+    private tribeRepository: Repository<Tribe>,
+  ) {}
+
+  async create(createTribeDto: CreateTribeDto) {
+    try {
+      const tribe = this.tribeRepository.create(createTribeDto);
+      const tribeSaved = await this.tribeRepository.save(tribe);
+
+      return {
+        result: tribeSaved,
+        message: 'Tribu registrada con exito.',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   findAll() {

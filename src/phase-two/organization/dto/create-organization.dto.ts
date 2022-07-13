@@ -10,7 +10,7 @@ export class CreateOrganizationDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({ type: String, description: 'Nombre de la organizacion' })
-  nombre: string;
+  name: string;
 
   @IsNumber()
   @IsNotEmpty()
