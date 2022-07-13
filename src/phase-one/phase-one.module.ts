@@ -4,6 +4,6 @@ import { PhaseOneController } from './phase-one.controller';
 
 @Module({
   controllers: [PhaseOneController],
-  providers: [PhaseOneService]
+  providers: [PhaseOneService],
 })
 export class PhaseOneModule {}
