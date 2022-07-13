@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { OrganizationService } from './organization.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
@@ -36,11 +37,14 @@ export class OrganizationController {
   }
 
   @Patch(':id')
+  @ApiOkResponse({ description: 'Updated Office' })
+  @ApiBody({ type: UpdateOrganizationDto })
+  @ApiOperation({ summary: 'Update Office by Id' })
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateOrganizationDto: UpdateOrganizationDto,
   ) {
-    return this.organizationService.update(+id, updateOrganizationDto);
+    return this.organizationService.update(id, updateOrganizationDto);
   }
 
   @Delete(':id')

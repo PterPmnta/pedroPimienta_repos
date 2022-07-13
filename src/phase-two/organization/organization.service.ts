@@ -38,9 +38,16 @@ export class OrganizationService {
     return `This action returns a #${id} organization`;
   }
 
-  update(id: number, updateOrganizationDto: UpdateOrganizationDto) {
-    console.log(updateOrganizationDto);
-    return `This action updates a #${id} organization`;
+  async update(id: number, updateOrganizationDto: UpdateOrganizationDto) {
+    try {
+      await this.organizationRepository.update(id, updateOrganizationDto);
+
+      return {
+        message: 'Organizacion actualizada de manera exitosa.',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   remove(id: number) {
