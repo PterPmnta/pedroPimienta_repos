@@ -16,3 +16,12 @@ export interface MockPhaseThree {
   verificationState: string;
   state: string;
 }
+
+export interface Paginate {
+  data: any;
+  count: number;
+  currentPage: number;
+  nextPage: number;
+  prevPage: number;
+  lastPage: number;
+}

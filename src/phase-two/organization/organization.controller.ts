@@ -7,11 +7,19 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  DefaultValuePipe,
+  Query,
 } from '@nestjs/common';
 import { OrganizationService } from './organization.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
-import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('Organization')
 @Controller('organization')
@@ -27,13 +35,30 @@ export class OrganizationController {
   }
 
   @Get()
-  findAll() {
-    return this.organizationService.findAll();
+  @ApiOkResponse({ description: 'Returned list of all organizations' })
+  @ApiOperation({ summary: 'Returned list of all organizations' })
+  @ApiQuery({
+    name: 'page',
+    type: Number,
+    description: 'Page Number',
+  })
+  @ApiQuery({
+    name: 'limit',
+    type: Number,
+    description: 'Data limit for page',
+  })
+  async findAll(
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page = 0,
+    @Query('limit', new DefaultValuePipe(0), ParseIntPipe) limit = 10,
+  ) {
+    return this.organizationService.findAll(page, limit);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.organizationService.findOne(+id);
+  @ApiOkResponse({ description: 'Return Organization' })
+  @ApiOperation({ summary: 'Return specific organization by Id' })
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.organizationService.findOne(id);
   }
 
   @Patch(':id')

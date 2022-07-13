@@ -4,6 +4,9 @@ import { Repository } from 'typeorm';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Organization } from './entities/organization.entity';
+import { paginateResponse } from '../../utils/paginate-response';
+import { plainToClass, plainToInstance } from 'class-transformer';
+import { GetAllOrganizationDto } from './dto/get-all-offices.dto';
 
 @Injectable()
 export class OrganizationService {
@@ -30,12 +33,44 @@ export class OrganizationService {
     }
   }
 
-  findAll() {
-    return `This action returns all organization`;
+  async findAll(page: number, limit: number) {
+    try {
+      const result = await this.organizationRepository.findAndCount();
+
+      const paginatedOrganizations = paginateResponse(result, page, limit);
+      const mappedOrganization = paginatedOrganizations.data.map(
+        (organization: Organization) =>
+          plainToClass(GetAllOrganizationDto, organization),
+      ) as Organization[];
+
+      paginatedOrganizations.data = mappedOrganization;
+
+      return {
+        result: paginatedOrganizations,
+        message: 'Consulta exitosa.',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} organization`;
+  async findOne(id: number) {
+    try {
+      const result = await this.organizationRepository.find({
+        where: {
+          id_organization: id,
+        },
+      });
+
+      const organizationResult = plainToInstance(GetAllOrganizationDto, result);
+
+      return {
+        result: organizationResult,
+        message: 'Organizacion consultada con exito.',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async update(id: number, updateOrganizationDto: UpdateOrganizationDto) {
