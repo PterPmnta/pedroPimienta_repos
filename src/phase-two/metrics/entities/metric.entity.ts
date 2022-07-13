@@ -5,7 +5,7 @@ export class Metric {
   @PrimaryColumn({ name: 'id_metric' })
   id_metric: number;
 
-  @Column({ type: 'double', default: null })
+  @Column({ type: 'float', default: null })
   coverage: number;
 
   @Column({ type: 'int', default: null })
