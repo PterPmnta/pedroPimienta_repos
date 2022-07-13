@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Tribe } from '../../tribe/entities/tribe.entity';
 
 @Entity('organization')
 export class Organization {
@@ -10,4 +11,7 @@ export class Organization {
 
   @Column({ type: 'varchar', default: null })
   status: number;
+
+  @OneToMany(() => Tribe, (tribe) => tribe.id_tribe)
+  a_stations_id: Tribe[];
 }
