@@ -13,5 +13,5 @@ export class Organization {
   status: number;
 
   @OneToMany(() => Tribe, (tribe) => tribe.id_tribe)
-  a_stations_id: Tribe[];
+  id_tribe: Tribe[];
 }

@@ -25,5 +25,5 @@ export class Tribe {
   id_organization: Organization;
 
   @OneToMany(() => Repository, (repository) => repository.id_repository)
-  a_stations_id: Repository[];
+  id_repository: Repository[];
 }
