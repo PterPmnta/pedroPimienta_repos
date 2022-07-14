@@ -73,6 +73,8 @@ export class MetricsController {
   }
 
   @Delete(':id')
+  @ApiOkResponse({ description: 'Deleted Metric' })
+  @ApiOperation({ summary: 'Delete Metric by Id' })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.metricsService.remove(id);
   }

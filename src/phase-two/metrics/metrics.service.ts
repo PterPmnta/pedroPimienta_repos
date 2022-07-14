@@ -80,7 +80,15 @@ export class MetricsService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} metric`;
+  async remove(id: number) {
+    try {
+      await this.metricRepository.delete(id);
+
+      return {
+        message: `La metrica con el id: ${id}, se elimino de forma exitosa.`,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }
