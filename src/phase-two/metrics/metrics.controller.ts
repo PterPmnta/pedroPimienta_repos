@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { MetricsService } from './metrics.service';
 import { CreateMetricDto } from './dto/create-metric.dto';
@@ -31,17 +32,23 @@ export class MetricsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.metricsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.metricsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMetricDto: UpdateMetricDto) {
-    return this.metricsService.update(+id, updateMetricDto);
+  @ApiOkResponse({ description: 'Updated Metric' })
+  @ApiBody({ type: UpdateMetricDto })
+  @ApiOperation({ summary: 'Update Metric by Id' })
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateMetricDto: UpdateMetricDto,
+  ) {
+    return this.metricsService.update(id, updateMetricDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.metricsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.metricsService.remove(id);
   }
 }

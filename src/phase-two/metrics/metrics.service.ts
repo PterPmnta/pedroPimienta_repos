@@ -9,16 +9,16 @@ import { Metric } from './entities/metric.entity';
 export class MetricsService {
   constructor(
     @InjectRepository(Metric)
-    private tribeRepository: Repository<Metric>,
+    private metricRepository: Repository<Metric>,
   ) {}
 
   async create(createMetricDto: CreateMetricDto) {
     try {
-      const tribe = this.tribeRepository.create(createMetricDto);
-      const tribeSaved = await this.tribeRepository.save(tribe);
+      const metric = this.metricRepository.create(createMetricDto);
+      const metricSaved = await this.metricRepository.save(metric);
 
       return {
-        result: tribeSaved,
+        result: metricSaved,
         message: 'Metrica registrada con exito.',
       };
     } catch (error) {
@@ -34,8 +34,16 @@ export class MetricsService {
     return `This action returns a #${id} metric`;
   }
 
-  update(id: number, updateMetricDto: UpdateMetricDto) {
-    return `This action updates a #${id} metric`;
+  async update(id: number, updateMetricDto: UpdateMetricDto) {
+    try {
+      await this.metricRepository.update(id, updateMetricDto);
+
+      return {
+        message: `Metrica con el id:${id} ha sido actualizada con exito.`,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   remove(id: number) {
