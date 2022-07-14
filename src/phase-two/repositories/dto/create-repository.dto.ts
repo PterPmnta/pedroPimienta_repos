@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Tribe } from '../../tribe/entities/tribe.entity';
 import { StateRepositories, LogicStatus } from '../../../utils/enums';
+import { Metric } from '../../metrics/entities/metric.entity';
 
 export class CreateRepoDto {
   @IsNumber()
@@ -28,4 +29,12 @@ export class CreateRepoDto {
   @IsNotEmpty()
   @ApiProperty({ type: Number, description: 'ID de la organizacion' })
   id_tribe: Tribe;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty({
+    type: Number,
+    description: 'ID de la informacion de medicion',
+  })
+  id_metric: Metric;
 }

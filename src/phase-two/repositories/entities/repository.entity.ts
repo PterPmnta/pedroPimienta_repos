@@ -7,7 +7,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
+  OneToOne,
   PrimaryColumn,
 } from 'typeorm';
 
@@ -37,6 +37,7 @@ export class Repositories {
   @JoinColumn({ name: 'id_tribe' })
   id_tribe: Tribe;
 
-  @OneToMany(() => Metric, (metric) => metric.id_metric)
-  id_metric: Metric[];
+  @OneToOne(() => Metric)
+  @JoinColumn({ name: 'id_metric' })
+  id_metric: Metric;
 }

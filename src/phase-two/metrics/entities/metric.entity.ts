@@ -1,5 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
-import { Repositories } from '../../repositories/entities/repository.entity';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 @Entity('metric')
 export class Metric {
   @PrimaryColumn({ name: 'id_metric' })
@@ -19,8 +18,4 @@ export class Metric {
 
   @Column({ type: 'int', default: null })
   code_smells: number;
-
-  @ManyToOne(() => Repositories, (repository) => repository.id_repository)
-  @JoinColumn({ name: 'id_repository' })
-  id_repository: Repositories;
 }
