@@ -1,12 +1,12 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass, plainToInstance } from 'class-transformer';
-import { paginateResponse } from 'src/utils/paginate-response';
 import { Repository } from 'typeorm';
 import { CreateRepoDto } from './dto/create-repository.dto';
 import { GetAllRepositoriesDto } from './dto/get-all-repositories';
 import { UpdateRepositoryDto } from './dto/update-repository.dto';
 import { Repositories } from './entities/repository.entity';
+import { paginateResponse } from '../../utils/paginate-response';
 
 @Injectable()
 export class RepositoriesService {

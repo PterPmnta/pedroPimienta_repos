@@ -14,9 +14,10 @@ export class GetAllRepositoriesDto {
   @Expose()
   readonly status: LogicStatus;
   @Expose()
+  readonly created_at: Date;
+  @Expose()
   @Transform(({ value }) => value.id_tribe, { toClassOnly: true })
   readonly id_tribe: Tribe;
   @Expose()
-  @Transform(({ value }) => value.id_metric, { toClassOnly: true })
   readonly id_metric: Metric;
 }
