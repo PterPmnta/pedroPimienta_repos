@@ -87,7 +87,15 @@ export class RepositoriesService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} repository`;
+  async remove(id: number) {
+    try {
+      await this.reposRepository.delete(id);
+
+      return {
+        message: `El repositorio con el id: ${id}, se elimino de forma exitosa.`,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

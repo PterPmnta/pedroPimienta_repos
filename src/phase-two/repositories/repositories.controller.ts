@@ -73,7 +73,9 @@ export class RepositoriesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.repositoriesService.remove(+id);
+  @ApiOkResponse({ description: 'Deleted Repository' })
+  @ApiOperation({ summary: 'Delete Repository by Id' })
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.repositoriesService.remove(id);
   }
 }
