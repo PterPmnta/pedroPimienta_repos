@@ -34,8 +34,16 @@ export class RepositoriesService {
     return `This action returns a #${id} repository`;
   }
 
-  update(id: number, updateRepositoryDto: UpdateRepositoryDto) {
-    return `This action updates a #${id} repository`;
+  async update(id: number, updateRepositoryDto: UpdateRepositoryDto) {
+    try {
+      await this.reposRepository.update(id, updateRepositoryDto);
+
+      return {
+        message: `Repositorio con el id:${id} ha sido actualizado con exito.`,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   remove(id: number) {

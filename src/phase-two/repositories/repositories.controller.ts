@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { RepositoriesService } from './repositories.service';
 import { CreateRepoDto } from './dto/create-repository.dto';
@@ -36,11 +37,14 @@ export class RepositoriesController {
   }
 
   @Patch(':id')
+  @ApiOkResponse({ description: 'Updated Repository' })
+  @ApiBody({ type: UpdateRepositoryDto })
+  @ApiOperation({ summary: 'Update Repository by Id' })
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateRepositoryDto: UpdateRepositoryDto,
   ) {
-    return this.repositoriesService.update(+id, updateRepositoryDto);
+    return this.repositoriesService.update(id, updateRepositoryDto);
   }
 
   @Delete(':id')
