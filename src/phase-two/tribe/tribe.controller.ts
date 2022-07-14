@@ -58,7 +58,7 @@ export class TribeController {
   @ApiOkResponse({ description: 'Return Tribe' })
   @ApiOperation({ summary: 'Return specific tribe by Id' })
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.tribeService.findOne(+id);
+    return this.tribeService.findOne(id);
   }
 
   @Patch(':id')

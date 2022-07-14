@@ -1,7 +1,10 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { plainToClass, plainToInstance } from 'class-transformer';
+import { paginateResponse } from 'src/utils/paginate-response';
 import { Repository } from 'typeorm';
 import { CreateRepoDto } from './dto/create-repository.dto';
+import { GetAllRepositoriesDto } from './dto/get-all-repositories';
 import { UpdateRepositoryDto } from './dto/update-repository.dto';
 import { Repositories } from './entities/repository.entity';
 
@@ -26,12 +29,50 @@ export class RepositoriesService {
     }
   }
 
-  findAll() {
-    return `This action returns all repositories`;
+  async findAll(page: number, limit: number) {
+    try {
+      const result = await this.reposRepository.findAndCount({
+        relations: ['id_tribe', 'id_metric'],
+      });
+
+      const paginatedRepositories = paginateResponse(result, page, limit);
+      const mappedRepository = paginatedRepositories.data.map(
+        (repository: Repositories) =>
+          plainToClass(GetAllRepositoriesDto, repository),
+      ) as Repositories[];
+
+      paginatedRepositories.data = mappedRepository;
+
+      return {
+        result: paginatedRepositories,
+        message: 'Consulta exitosa.',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} repository`;
+  async findOne(id: number) {
+    try {
+      const result = await this.reposRepository.findOneOrFail({
+        where: {
+          id_repository: id,
+        },
+        relations: {
+          id_tribe: true,
+          id_metric: true,
+        },
+      });
+
+      const repositoryResult = plainToInstance(GetAllRepositoriesDto, result);
+
+      return {
+        result: repositoryResult,
+        message: 'Repositorio consultado con exito.',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async update(id: number, updateRepositoryDto: UpdateRepositoryDto) {
