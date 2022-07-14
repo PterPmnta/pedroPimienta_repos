@@ -85,7 +85,15 @@ export class TribeService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tribe`;
+  async remove(id: number) {
+    try {
+      await this.tribeRepository.delete(id);
+
+      return {
+        message: `La tribu con el id: ${id}, se elimino de forma exitosa.`,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

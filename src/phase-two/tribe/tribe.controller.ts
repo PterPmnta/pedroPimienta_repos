@@ -73,7 +73,9 @@ export class TribeController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tribeService.remove(+id);
+  @ApiOkResponse({ description: 'Deleted Tribe' })
+  @ApiOperation({ summary: 'Delete Tribe by Id' })
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.tribeService.remove(id);
   }
 }
