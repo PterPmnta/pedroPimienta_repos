@@ -6,7 +6,7 @@ import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Organization } from './entities/organization.entity';
 import { paginateResponse } from '../../utils/paginate-response';
 import { plainToClass, plainToInstance } from 'class-transformer';
-import { GetAllOrganizationDto } from './dto/get-all-offices.dto';
+import { GetAllOrganizationDto } from './dto/get-all-organization.dto';
 
 @Injectable()
 export class OrganizationService {
@@ -56,7 +56,7 @@ export class OrganizationService {
 
   async findOne(id: number) {
     try {
-      const result = await this.organizationRepository.find({
+      const result = await this.organizationRepository.findOneOrFail({
         where: {
           id_organization: id,
         },

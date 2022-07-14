@@ -7,11 +7,19 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  DefaultValuePipe,
+  Query,
 } from '@nestjs/common';
 import { TribeService } from './tribe.service';
 import { CreateTribeDto } from './dto/create-tribe.dto';
 import { UpdateTribeDto } from './dto/update-tribe.dto';
-import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('Tribe')
 @Controller('tribe')
@@ -27,12 +35,29 @@ export class TribeController {
   }
 
   @Get()
-  findAll() {
-    return this.tribeService.findAll();
+  @ApiOkResponse({ description: 'Returned list of all tribes' })
+  @ApiOperation({ summary: 'Returned list of all tribes' })
+  @ApiQuery({
+    name: 'page',
+    type: Number,
+    description: 'Page Number',
+  })
+  @ApiQuery({
+    name: 'limit',
+    type: Number,
+    description: 'Data limit for page',
+  })
+  findAll(
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page = 0,
+    @Query('limit', new DefaultValuePipe(0), ParseIntPipe) limit = 10,
+  ) {
+    return this.tribeService.findAll(page, limit);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @ApiOkResponse({ description: 'Return Tribe' })
+  @ApiOperation({ summary: 'Return specific tribe by Id' })
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.tribeService.findOne(+id);
   }
 

@@ -1,7 +1,10 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { plainToClass, plainToInstance } from 'class-transformer';
+import { paginateResponse } from 'src/utils/paginate-response';
 import { Repository } from 'typeorm';
 import { CreateTribeDto } from './dto/create-tribe.dto';
+import { GetAllTribesDto } from './dto/get-all-tribes.dto';
 import { UpdateTribeDto } from './dto/update-tribe.dto';
 import { Tribe } from './entities/tribe.entity';
 
@@ -26,12 +29,48 @@ export class TribeService {
     }
   }
 
-  findAll() {
-    return `This action returns all tribe`;
+  async findAll(page: number, limit: number) {
+    try {
+      const result = await this.tribeRepository.findAndCount({
+        relations: ['id_organization'],
+      });
+
+      const paginatedTribes = paginateResponse(result, page, limit);
+      const mappedTribe = paginatedTribes.data.map((tribe: Tribe) =>
+        plainToClass(GetAllTribesDto, tribe),
+      ) as Tribe[];
+
+      paginatedTribes.data = mappedTribe;
+
+      return {
+        result: paginatedTribes,
+        message: 'Consulta exitosa.',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tribe`;
+  async findOne(id: number) {
+    try {
+      const result = await this.tribeRepository.findOneOrFail({
+        where: {
+          id_tribe: id,
+        },
+        relations: {
+          id_organization: true,
+        },
+      });
+
+      const tribeResult = plainToInstance(GetAllTribesDto, result);
+
+      return {
+        result: tribeResult,
+        message: 'Tribu consultada con exito.',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async update(id: number, updateTribeDto: UpdateTribeDto) {
