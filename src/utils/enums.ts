@@ -1,10 +1,10 @@
 export enum StateRepositories {
-  E = 'Enable',
-  D = 'Disable',
-  A = 'Archived',
+  Enable = 'E',
+  Disable = 'D',
+  Archived = 'A',
 }
 
 export enum LogicStatus {
-  A = 'Active',
-  I = 'Inactive',
+  Active = 'A',
+  Inactive = 'I',
 }

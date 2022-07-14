@@ -7,7 +7,7 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { Organization } from '../../organization/entities/organization.entity';
-import { Repository } from '../../repositories/entities/repository.entity';
+import { Repositories } from '../../repositories/entities/repository.entity';
 
 @Entity('tribe')
 export class Tribe {
@@ -24,6 +24,6 @@ export class Tribe {
   @JoinColumn({ name: 'id_organization' })
   id_organization: Organization;
 
-  @OneToMany(() => Repository, (repository) => repository.id_repository)
-  id_repository: Repository[];
+  @OneToMany(() => Repositories, (repository) => repository.id_repository)
+  id_repository: Repositories[];
 }

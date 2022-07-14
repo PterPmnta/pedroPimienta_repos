@@ -1,11 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import { CreateRepositoryDto } from './dto/create-repository.dto';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateRepoDto } from './dto/create-repository.dto';
 import { UpdateRepositoryDto } from './dto/update-repository.dto';
+import { Repositories } from './entities/repository.entity';
 
 @Injectable()
 export class RepositoriesService {
-  create(createRepositoryDto: CreateRepositoryDto) {
-    return 'This action adds a new repository';
+  constructor(
+    @InjectRepository(Repositories)
+    private reposRepository: Repository<Repositories>,
+  ) {}
+
+  async create(createRepoDto: CreateRepoDto) {
+    try {
+      const repo = this.reposRepository.create(createRepoDto);
+      const repoSaved = await this.reposRepository.save(repo);
+
+      return {
+        result: repoSaved,
+        message: 'Repositorio registrado con exito.',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   findAll() {

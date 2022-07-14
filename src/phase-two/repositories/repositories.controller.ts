@@ -1,15 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { RepositoriesService } from './repositories.service';
-import { CreateRepositoryDto } from './dto/create-repository.dto';
+import { CreateRepoDto } from './dto/create-repository.dto';
 import { UpdateRepositoryDto } from './dto/update-repository.dto';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Repository')
 @Controller('repositories')
 export class RepositoriesController {
   constructor(private readonly repositoriesService: RepositoriesService) {}
 
   @Post()
-  create(@Body() createRepositoryDto: CreateRepositoryDto) {
-    return this.repositoriesService.create(createRepositoryDto);
+  @ApiOkResponse({ description: 'Created Tribe' })
+  @ApiBody({ type: CreateRepoDto })
+  @ApiOperation({ summary: 'Create Tribe' })
+  create(@Body() createRepoDto: CreateRepoDto) {
+    return this.repositoriesService.create(createRepoDto);
   }
 
   @Get()
@@ -23,7 +36,10 @@ export class RepositoriesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRepositoryDto: UpdateRepositoryDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateRepositoryDto: UpdateRepositoryDto,
+  ) {
     return this.repositoriesService.update(+id, updateRepositoryDto);
   }
 
