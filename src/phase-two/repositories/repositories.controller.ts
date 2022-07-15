@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Query,
   DefaultValuePipe,
+  Inject,
 } from '@nestjs/common';
 import { RepositoriesService } from './repositories.service';
 import { CreateRepoDto } from './dto/create-repository.dto';
@@ -24,7 +25,10 @@ import {
 @ApiTags('Repository')
 @Controller('repositories')
 export class RepositoriesController {
-  constructor(private readonly repositoriesService: RepositoriesService) {}
+  constructor(
+    @Inject('REPOSITORIES_SERVICE')
+    private readonly repositoriesService: RepositoriesService,
+  ) {}
 
   @Post()
   @ApiOkResponse({ description: 'Created Tribe' })

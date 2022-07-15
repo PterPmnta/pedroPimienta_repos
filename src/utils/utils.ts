@@ -43,3 +43,23 @@ export const mockPhaseThree: MockPhaseThree[] = [
     state: 'Archivado',
   },
 ];
+
+export const repositoryData = {
+  result: {
+    id_repository: 1,
+    name: 'Repositorio Luna',
+    state: 'E',
+    status: 'A',
+    created_at: '2022-07-14T07:31:25.134Z',
+    id_tribe: 1,
+    id_metric: {
+      id_metric: 1,
+      coverage: 80,
+      bugs: '10',
+      vulnerabilities: '2',
+      hotspot: '4',
+      code_smells: '8',
+    },
+  },
+  message: 'Repositorio consultado con exito.',
+};

@@ -7,6 +7,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [TypeOrmModule.forFeature([Repositories])],
   controllers: [RepositoriesController],
-  providers: [RepositoriesService],
+  providers: [
+    {
+      provide: 'REPOSITORIES_SERVICE',
+      useClass: RepositoriesService,
+    },
+  ],
 })
 export class RepositoriesModule {}
