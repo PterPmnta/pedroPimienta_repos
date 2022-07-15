@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass, plainToInstance } from 'class-transformer';
-import { Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 import { CreateRepoDto } from './dto/create-repository.dto';
 import { GetAllRepositoriesDto } from './dto/get-all-repositories';
 import { UpdateRepositoryDto } from './dto/update-repository.dto';
@@ -69,6 +69,29 @@ export class RepositoriesService {
       return {
         result: repositoryResult,
         message: 'Repositorio consultado con exito.',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
+  }
+
+  async findRepoByTribe(id: number) {
+    try {
+      const result = await this.reposRepository.find({
+        where: {
+          id_tribe: Equal(id),
+        },
+      });
+
+      if (result.length === 0) {
+        throw new InternalServerErrorException(
+          'La tribu no se encuentra registrada.',
+        );
+      }
+
+      return {
+        result: result,
+        message: 'Consulta exitosa.',
       };
     } catch (error) {
       throw new InternalServerErrorException(error.message);

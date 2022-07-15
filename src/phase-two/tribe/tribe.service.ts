@@ -32,7 +32,9 @@ export class TribeService {
   async findAll(page: number, limit: number) {
     try {
       const result = await this.tribeRepository.findAndCount({
-        relations: ['id_organization'],
+        relations: {
+          id_organization: true,
+        },
       });
 
       const paginatedTribes = paginateResponse(result, page, limit);

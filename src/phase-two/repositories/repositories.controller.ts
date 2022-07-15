@@ -65,6 +65,13 @@ export class RepositoriesController {
     return this.repositoriesService.findOne(id);
   }
 
+  @Get('repos-tribe/:id')
+  @ApiOkResponse({ description: 'Return Repository' })
+  @ApiOperation({ summary: 'Return specific repository by Tribe Id' })
+  findRepoByTribe(@Param('id', ParseIntPipe) id: number) {
+    return this.repositoriesService.findRepoByTribe(id);
+  }
+
   @Patch(':id')
   @ApiOkResponse({ description: 'Updated Repository' })
   @ApiBody({ type: UpdateRepositoryDto })

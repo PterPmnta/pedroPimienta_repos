@@ -6,6 +6,7 @@ import { repositoryData } from '../../utils/utils';
 describe('RepositoriesController', () => {
   const id = 1;
   const repoResultDto = repositoryData;
+  const dataRepoByTribe = [];
   let controller: RepositoriesController;
   let repoService: RepositoriesService;
   const mockRepoService = {
@@ -14,6 +15,11 @@ describe('RepositoriesController', () => {
         result: repoResultDto.result,
         message: repoResultDto.message,
       };
+    }),
+    findRepoByTribe: jest.fn((id) => {
+      if (dataRepoByTribe.length === 0) {
+        return 'La tribu no se encuentra registrada.';
+      }
     }),
   };
 
@@ -55,6 +61,14 @@ describe('RepositoriesController', () => {
 
     it('Metric data', async () => {
       expect(mockData.result.id_metric).toEqual(repoResultDto.result.id_metric);
+    });
+  });
+
+  describe('Escenario 2', () => {
+    it('Tribe doesnt exists', async () => {
+      expect(mockRepoService.findRepoByTribe(id)).toStrictEqual(
+        'La tribu no se encuentra registrada.',
+      );
     });
   });
 });
