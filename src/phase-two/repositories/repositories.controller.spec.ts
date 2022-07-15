@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RepositoriesController } from './repositories.controller';
 import { RepositoriesService } from './repositories.service';
-import { reposByTribeId, repositoryData } from '../../utils/utils';
+import {
+  reposByTribeId,
+  repositoryData,
+  repoNotCoverage,
+} from '../../utils/utils';
 
 describe('RepositoriesController', () => {
   const id = 1;
@@ -23,6 +27,20 @@ describe('RepositoriesController', () => {
     }),
     naturalStateLanguage: jest.fn((id) => {
       return reposByTribeId;
+    }),
+    tribeReposNotCoverage: jest.fn((id) => {
+      let acum = 0;
+      repoNotCoverage.forEach((repo) => {
+        if ([75].includes(repo.id_metric.coverage)) {
+          acum = acum + 1;
+        }
+      });
+
+      if (acum === 0) {
+        throw new Error(
+          'La Tribu no tiene repositorios que cumplan con la cobertura necesaria.',
+        );
+      }
     }),
   };
 
@@ -83,6 +101,18 @@ describe('RepositoriesController', () => {
           ['Enable', 'Disable', 'Archived'].includes(repo.state),
         ).toBeTruthy();
       });
+    });
+  });
+
+  describe('Escenario 4', () => {
+    it('Tribe with out repositories doesnt have coverage over 75%', () => {
+      expect(() => {
+        mockRepoService.tribeReposNotCoverage(id);
+      }).toThrowError(
+        new Error(
+          'La Tribu no tiene repositorios que cumplan con la cobertura necesaria.',
+        ),
+      );
     });
   });
 });

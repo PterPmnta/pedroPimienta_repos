@@ -86,3 +86,62 @@ export const reposByTribeId = [
     state: 'Enable',
   },
 ];
+
+export const repoNotCoverage = [
+  {
+    id_repository: 1,
+    name: 'Repositorio Luna',
+    state: 'E',
+    status: 'A',
+    id_metric: {
+      id_metric: 1,
+      coverage: 40,
+      bugs: '10',
+      vulnerabilities: '2',
+      hotspot: '4',
+      code_smells: '8',
+    },
+  },
+  {
+    id_repository: 2,
+    name: 'Repositorio Proyecto Sociial',
+    state: 'D',
+    status: 'A',
+    id_metric: {
+      id_metric: 1,
+      coverage: 40,
+      bugs: '10',
+      vulnerabilities: '2',
+      hotspot: '4',
+      code_smells: '8',
+    },
+  },
+  {
+    id_repository: 7,
+    name: 'Repositorio Proyecto Musical',
+    state: 'A',
+    status: 'A',
+    id_metric: {
+      id_metric: 1,
+      coverage: 40,
+      bugs: '10',
+      vulnerabilities: '2',
+      hotspot: '4',
+      code_smells: '8',
+    },
+  },
+  {
+    id_repository: 12,
+    name: 'Repositorio App Banco',
+    state: 'E',
+    status: 'A',
+    id_metric: {
+      id_metric: 1,
+      coverage: 40,
+      bugs: '10',
+      vulnerabilities: '2',
+      hotspot: '4',
+      code_smells: '8',
+    },
+  },
+];

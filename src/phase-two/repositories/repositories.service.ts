@@ -81,6 +81,9 @@ export class RepositoriesService {
         where: {
           id_tribe: Equal(id),
         },
+        relations: {
+          id_metric: true,
+        },
       });
 
       if (result.length === 0) {
