@@ -1,34 +1,95 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  Query,
+  DefaultValuePipe,
+  Inject,
+} from '@nestjs/common';
 import { RepositoriesService } from './repositories.service';
-import { CreateRepositoryDto } from './dto/create-repository.dto';
+import { CreateRepoDto } from './dto/create-repository.dto';
 import { UpdateRepositoryDto } from './dto/update-repository.dto';
+import { StateRepositories } from '../../utils/enums';
+import {
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('Repository')
 @Controller('repositories')
 export class RepositoriesController {
-  constructor(private readonly repositoriesService: RepositoriesService) {}
+  constructor(
+    @Inject('REPOSITORIES_SERVICE')
+    private readonly repositoriesService: RepositoriesService,
+  ) {}
 
   @Post()
-  create(@Body() createRepositoryDto: CreateRepositoryDto) {
-    return this.repositoriesService.create(createRepositoryDto);
+  @ApiOkResponse({ description: 'Created Tribe' })
+  @ApiBody({ type: CreateRepoDto })
+  @ApiOperation({ summary: 'Create Tribe' })
+  create(@Body() createRepoDto: CreateRepoDto) {
+    return this.repositoriesService.create(createRepoDto);
   }
 
   @Get()
-  findAll() {
-    return this.repositoriesService.findAll();
+  @ApiOkResponse({ description: 'Returned list of all repositories' })
+  @ApiOperation({ summary: 'Returned list of all repositories' })
+  @ApiQuery({
+    name: 'page',
+    type: Number,
+    description: 'Page Number',
+  })
+  @ApiQuery({
+    name: 'limit',
+    type: Number,
+    description: 'Data limit for page',
+  })
+  findAll(
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page = 0,
+    @Query('limit', new DefaultValuePipe(0), ParseIntPipe) limit = 10,
+    @Query('state', new DefaultValuePipe(0), ParseIntPipe) state = 'E',
+    @Query('percentage', new DefaultValuePipe(0), ParseIntPipe) percentage = 50,
+  ) {
+    return this.repositoriesService.findAll(page, limit, state, percentage);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.repositoriesService.findOne(+id);
+  @ApiOkResponse({ description: 'Return Repository' })
+  @ApiOperation({ summary: 'Return specific repository by Id' })
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.repositoriesService.findOne(id);
+  }
+
+  @Get('repos-tribe/:id')
+  @ApiOkResponse({ description: 'Return Repository' })
+  @ApiOperation({ summary: 'Return specific repository by Tribe Id' })
+  findRepoByTribe(@Param('id', ParseIntPipe) id: number) {
+    return this.repositoriesService.findRepoByTribe(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRepositoryDto: UpdateRepositoryDto) {
-    return this.repositoriesService.update(+id, updateRepositoryDto);
+  @ApiOkResponse({ description: 'Updated Repository' })
+  @ApiBody({ type: UpdateRepositoryDto })
+  @ApiOperation({ summary: 'Update Repository by Id' })
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateRepositoryDto: UpdateRepositoryDto,
+  ) {
+    return this.repositoriesService.update(id, updateRepositoryDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.repositoriesService.remove(+id);
+  @ApiOkResponse({ description: 'Deleted Repository' })
+  @ApiOperation({ summary: 'Delete Repository by Id' })
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.repositoriesService.remove(id);
   }
 }

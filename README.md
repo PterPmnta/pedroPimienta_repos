@@ -56,6 +56,9 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
+
+#execute all test to the phase 3
+$npm run test:repository
 ```
 
 ## Support
@@ -71,3 +74,16 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## Enviroments settings
+
+# Aplication Configuration
+
+PORT=3000
+
+HOST=free-tier11.gcp-us-east1.cockroachlabs.cloud
+DATABASE=defaultdb
+USERNAME_DB=neoris-db
+PORT_DB=26257
+OPTIONS=--cluster=neoris-test-1351
+PASSWORD=puMrAWCHTbifj9QPnpgzOA

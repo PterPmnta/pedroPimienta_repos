@@ -6,5 +6,6 @@ import { MetricsModule } from './metrics/metrics.module';
 
 @Module({
   imports: [OrganizationModule, RepositoriesModule, TribeModule, MetricsModule],
+  exports: [OrganizationModule, RepositoriesModule, TribeModule, MetricsModule],
 })
 export class PhaseTwoModule {}

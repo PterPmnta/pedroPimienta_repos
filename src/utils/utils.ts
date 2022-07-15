@@ -43,3 +43,105 @@ export const mockPhaseThree: MockPhaseThree[] = [
     state: 'Archivado',
   },
 ];
+
+export const repositoryData = {
+  result: {
+    id_repository: 1,
+    name: 'Repositorio Luna',
+    state: 'E',
+    status: 'A',
+    created_at: '2022-07-14T07:31:25.134Z',
+    id_tribe: 1,
+    id_metric: {
+      id_metric: 1,
+      coverage: 80,
+      bugs: '10',
+      vulnerabilities: '2',
+      hotspot: '4',
+      code_smells: '8',
+    },
+  },
+  message: 'Repositorio consultado con exito.',
+};
+
+export const reposByTribeId = [
+  {
+    id_repository: 1,
+    name: 'Repositorio Luna',
+    state: 'Enable',
+  },
+  {
+    id_repository: 10,
+    name: 'Repositorio Luna',
+    state: 'Disable',
+  },
+  {
+    id_repository: 15,
+    name: 'Repositorio Luna',
+    state: 'Archived',
+  },
+  {
+    id_repository: 21,
+    name: 'Repositorio Luna',
+    state: 'Enable',
+  },
+];
+
+export const repoNotCoverage = [
+  {
+    id_repository: 1,
+    name: 'Repositorio Luna',
+    state: 'E',
+    status: 'A',
+    id_metric: {
+      id_metric: 1,
+      coverage: 40,
+      bugs: '10',
+      vulnerabilities: '2',
+      hotspot: '4',
+      code_smells: '8',
+    },
+  },
+  {
+    id_repository: 2,
+    name: 'Repositorio Proyecto Sociial',
+    state: 'D',
+    status: 'A',
+    id_metric: {
+      id_metric: 1,
+      coverage: 40,
+      bugs: '10',
+      vulnerabilities: '2',
+      hotspot: '4',
+      code_smells: '8',
+    },
+  },
+  {
+    id_repository: 7,
+    name: 'Repositorio Proyecto Musical',
+    state: 'A',
+    status: 'A',
+    id_metric: {
+      id_metric: 1,
+      coverage: 40,
+      bugs: '10',
+      vulnerabilities: '2',
+      hotspot: '4',
+      code_smells: '8',
+    },
+  },
+  {
+    id_repository: 12,
+    name: 'Repositorio App Banco',
+    state: 'E',
+    status: 'A',
+    id_metric: {
+      id_metric: 1,
+      coverage: 40,
+      bugs: '10',
+      vulnerabilities: '2',
+      hotspot: '4',
+      code_smells: '8',
+    },
+  },
+];

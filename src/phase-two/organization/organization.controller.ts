@@ -62,9 +62,9 @@ export class OrganizationController {
   }
 
   @Patch(':id')
-  @ApiOkResponse({ description: 'Updated Office' })
+  @ApiOkResponse({ description: 'Updated Organization' })
   @ApiBody({ type: UpdateOrganizationDto })
-  @ApiOperation({ summary: 'Update Office by Id' })
+  @ApiOperation({ summary: 'Update Organization by Id' })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateOrganizationDto: UpdateOrganizationDto,
