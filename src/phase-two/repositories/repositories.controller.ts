@@ -14,6 +14,7 @@ import {
 import { RepositoriesService } from './repositories.service';
 import { CreateRepoDto } from './dto/create-repository.dto';
 import { UpdateRepositoryDto } from './dto/update-repository.dto';
+import { StateRepositories } from '../../utils/enums';
 import {
   ApiBody,
   ApiOkResponse,
@@ -54,8 +55,10 @@ export class RepositoriesController {
   findAll(
     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page = 0,
     @Query('limit', new DefaultValuePipe(0), ParseIntPipe) limit = 10,
+    @Query('state', new DefaultValuePipe(0), ParseIntPipe) state = 'E',
+    @Query('percentage', new DefaultValuePipe(0), ParseIntPipe) percentage = 50,
   ) {
-    return this.repositoriesService.findAll(page, limit);
+    return this.repositoriesService.findAll(page, limit, state, percentage);
   }
 
   @Get(':id')

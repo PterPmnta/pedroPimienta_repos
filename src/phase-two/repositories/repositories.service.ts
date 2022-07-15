@@ -1,18 +1,20 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass, plainToInstance } from 'class-transformer';
-import { Equal, Repository } from 'typeorm';
+import { Connection, createQueryBuilder, Equal, Repository } from 'typeorm';
 import { CreateRepoDto } from './dto/create-repository.dto';
 import { GetAllRepositoriesDto } from './dto/get-all-repositories';
 import { UpdateRepositoryDto } from './dto/update-repository.dto';
 import { Repositories } from './entities/repository.entity';
 import { paginateResponse } from '../../utils/paginate-response';
+import { StateRepositories } from '../../utils/enums';
 
 @Injectable()
 export class RepositoriesService {
   constructor(
     @InjectRepository(Repositories)
     private reposRepository: Repository<Repositories>,
+    private connection: Connection,
   ) {}
 
   async create(createRepoDto: CreateRepoDto) {
@@ -29,10 +31,21 @@ export class RepositoriesService {
     }
   }
 
-  async findAll(page: number, limit: number) {
+  async findAll(
+    page: number,
+    limit: number,
+    state: string,
+    percentage: number,
+  ) {
     try {
       const result = await this.reposRepository.findAndCount({
-        relations: ['id_tribe', 'id_metric'],
+        where: {
+          state: Equal(StateRepositories.Enable),
+        },
+        relations: {
+          id_tribe: true,
+          id_metric: true,
+        },
       });
 
       const paginatedRepositories = paginateResponse(result, page, limit);
