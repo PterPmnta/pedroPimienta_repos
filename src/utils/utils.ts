@@ -63,3 +63,26 @@ export const repositoryData = {
   },
   message: 'Repositorio consultado con exito.',
 };
+
+export const reposByTribeId = [
+  {
+    id_repository: 1,
+    name: 'Repositorio Luna',
+    state: 'Enable',
+  },
+  {
+    id_repository: 10,
+    name: 'Repositorio Luna',
+    state: 'Disable',
+  },
+  {
+    id_repository: 15,
+    name: 'Repositorio Luna',
+    state: 'Archived',
+  },
+  {
+    id_repository: 21,
+    name: 'Repositorio Luna',
+    state: 'Enable',
+  },
+];

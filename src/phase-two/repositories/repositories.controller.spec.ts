@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RepositoriesController } from './repositories.controller';
 import { RepositoriesService } from './repositories.service';
-import { repositoryData } from '../../utils/utils';
+import { reposByTribeId, repositoryData } from '../../utils/utils';
 
 describe('RepositoriesController', () => {
   const id = 1;
@@ -18,8 +18,11 @@ describe('RepositoriesController', () => {
     }),
     findRepoByTribe: jest.fn((id) => {
       if (dataRepoByTribe.length === 0) {
-        return 'La tribu no se encuentra registrada.';
+        throw new Error('La tribu no se encuentra registrada.');
       }
+    }),
+    naturalStateLanguage: jest.fn((id) => {
+      return reposByTribeId;
     }),
   };
 
@@ -66,9 +69,20 @@ describe('RepositoriesController', () => {
 
   describe('Escenario 2', () => {
     it('Tribe doesnt exists', async () => {
-      expect(mockRepoService.findRepoByTribe(id)).toStrictEqual(
-        'La tribu no se encuentra registrada.',
-      );
+      expect(() => {
+        mockRepoService.findRepoByTribe(id);
+      }).toThrowError(new Error('La tribu no se encuentra registrada.'));
+    });
+  });
+
+  describe('Escenario 3', () => {
+    it('Label natural language about repositories state', () => {
+      const response = mockRepoService.naturalStateLanguage(id);
+      response.forEach((repo) => {
+        expect(
+          ['Enable', 'Disable', 'Archived'].includes(repo.state),
+        ).toBeTruthy();
+      });
     });
   });
 });
