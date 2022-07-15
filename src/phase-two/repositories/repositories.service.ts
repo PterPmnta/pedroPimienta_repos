@@ -1,20 +1,20 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass, plainToInstance } from 'class-transformer';
-import { Connection, createQueryBuilder, Equal, Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 import { CreateRepoDto } from './dto/create-repository.dto';
-import { GetAllRepositoriesDto } from './dto/get-all-repositories';
 import { UpdateRepositoryDto } from './dto/update-repository.dto';
 import { Repositories } from './entities/repository.entity';
 import { paginateResponse } from '../../utils/paginate-response';
-import { StateRepositories } from '../../utils/enums';
+import { GetAllRepositoriesDto } from './dto/get-all-repositories';
+import { StateRepositories } from 'src/utils/enums';
+import { Parser } from 'json2csv';
 
 @Injectable()
 export class RepositoriesService {
   constructor(
     @InjectRepository(Repositories)
     private reposRepository: Repository<Repositories>,
-    private connection: Connection,
   ) {}
 
   async create(createRepoDto: CreateRepoDto) {
@@ -89,6 +89,20 @@ export class RepositoriesService {
   }
 
   async findRepoByTribe(id: number) {
+    const fields = [
+      'id_repository',
+      'name',
+      'state',
+      'status',
+      'created_at',
+      'id_metric',
+      'coverage',
+      'bugs',
+      'vulnerabilities',
+      'hotspot',
+      'code_smells',
+    ];
+    const opts = { fields };
     try {
       const result = await this.reposRepository.find({
         where: {
@@ -105,8 +119,12 @@ export class RepositoriesService {
         );
       }
 
+      const parser = new Parser(opts);
+      const csv = parser.parse(result);
+
       return {
         result: result,
+        csv: csv,
         message: 'Consulta exitosa.',
       };
     } catch (error) {
