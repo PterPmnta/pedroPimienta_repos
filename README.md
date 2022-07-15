@@ -56,6 +56,9 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
+
+#execute all test to the phase 3
+$npm run test:repository
 ```
 
 ## Support
@@ -71,3 +74,48 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## Enviroments settings
+
+- PORT=3000
+- HOST=free-tier11.gcp-us-east1.cockroachlabs.cloud
+- DATABASE=defaultdb
+- USERNAME_DB=neoris-db
+- PORT_DB=26257
+- OPTIONS=--cluster=neoris-test-1351
+- PASSWORD=puMrAWCHTbifj9QPnpgzOA
+
+# API routes
+
+## Organization
+
+- Pots(localhost:3000/organization)
+- Patch(localhost:3000/organization/1)
+- GetAll(localhost:3000/organization/)
+- GetById(localhost:3000/organization/1)
+- Delete(localhost:3000/organization/4)
+
+## Tribe
+
+- Pots(localhost:3000/tribe)
+- Patch(localhost:3000/tribe/1)
+- GetAll(localhost:3000/tribe/)
+- GetById(localhost:3000/tribe/1)
+- Delete(localhost:3000/tribe/4)
+
+## Repositories
+
+- Pots(localhost:3000/repositories)
+- Patch(localhost:3000/reositories/1)
+- GetAll(localhost:3000/repositories/)
+- GetById(localhost:3000/repositories/1)
+- GetByRepositoriesByTribeId(localhost:3000/repos-tribe/1)
+- Delete(localhost:3000/repositories/4)
+
+## Tribe
+
+- Pots(localhost:3000/metrics)
+- Patch(localhost:3000/metrics/1)
+- GetAll(localhost:3000/metrics/)
+- GetById(localhost:3000/metrics/1)
+- Delete(localhost:3000/metrics/4)
